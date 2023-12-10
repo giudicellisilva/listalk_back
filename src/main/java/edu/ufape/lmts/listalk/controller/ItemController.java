@@ -14,19 +14,18 @@ import jakarta.validation.Valid;
 
 import edu.ufape.lmts.listalk.model.Item;
 import edu.ufape.lmts.listalk.model.MyList;
-import edu.ufape.lmts.listalk.controller.dto.*;
 import edu.ufape.lmts.listalk.controller.dto.request.ItemRequest;
 import edu.ufape.lmts.listalk.controller.dto.response.ItemResponse;
 import edu.ufape.lmts.listalk.facade.Facade;
 
 
-@CrossOrigin (origins = "http://localhost:8081/" )
+@CrossOrigin (origins = "http://localhost:3000/" )
 @RestController
 @RequestMapping("/myList/")
 public class ItemController {
 	@Autowired
 	private Facade facade;
-	
+
 	@GetMapping("{myListId}/item")
 	public List<ItemResponse> getAllItem(@PathVariable Long myListId) {
 		return facade.listItemMyList(myListId)
@@ -34,7 +33,7 @@ public class ItemController {
 			.map(ItemResponse::new)
 			.toList();
 	}
-	
+
 	@PostMapping("{myListId}/item")
 	public ItemResponse createItem(@PathVariable Long myListId, @Valid @RequestBody ItemRequest newObj) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -47,7 +46,7 @@ public class ItemController {
 		it.setMyList(myList);
 		return new ItemResponse(facade.saveItem(it));
 	}
-	
+
 	@GetMapping("{myListId}/item/{id}")
 	public ItemResponse getItemById(@PathVariable Long myListId, @PathVariable Long id) {
 		try {
@@ -56,7 +55,7 @@ public class ItemController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item " + id + " not found.");
 		}
 	}
-	
+
 	@PostMapping("{myListId}/item/{id}")
 	public ItemResponse updateItem(@PathVariable Long id, @Valid @RequestBody ItemRequest obj) {
 		try {
@@ -72,9 +71,9 @@ public class ItemController {
 		} catch (RuntimeException ex) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, ex.getMessage());
 		}
-		
+
 	}
-	
+
 	@DeleteMapping("{myListId}/item/{id}")
 	public String deleteItem(@PathVariable Long id) {
 		try {
@@ -83,8 +82,8 @@ public class ItemController {
 		} catch (RuntimeException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item " + id + " not found.");
 		}
-		
+
 	}
-	
+
 
 }

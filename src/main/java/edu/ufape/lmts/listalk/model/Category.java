@@ -14,7 +14,7 @@ import lombok.ToString;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor 
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 public  class Category  {
@@ -24,5 +24,4 @@ public  class Category  {
 	private long id;
 	private String name;
 
-	
 }

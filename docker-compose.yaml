@@ -1,0 +1,83 @@
+version: '3'
+services:
+  backend:
+    image: listalk-backend
+    build: .
+    ports:
+      - 8081:8081
+    expose:
+      - 8081
+    command: mvn spring-boot:run
+    networks:
+      - listalk-networks
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://backend-db:5432/listalk
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      - backend-db
+      - keycloak
+  backend-db:
+    image: postgres:16.0
+    restart: always
+    environment:
+      POSTGRES_DB: listalk
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      TZ: America/Sao_Paulo
+    ports:
+      - 5433:5432
+    expose:
+      - 5432
+    networks:
+      - listalk-networks
+    volumes:
+      - pg-data:/var/lib/postgresql/listalk/data
+
+  keycloak:
+    image: quay.io/keycloak/keycloak
+    ports:
+      - "8080:8080"
+    # restart: always
+    networks:
+      - listalk-networks
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      DB_VENDOR: POSTGRES  # Defina o tipo de banco de dados como PostgreSQL
+      DB_ADDR: keycloak-db  # Nome do serviÃ§o do PostgreSQL para o Keycloak no Docker Compose
+      DB_PORT: 5432
+      DB_DATABASE: keycloak
+      DB_USER: postgres
+      DB_SCHEMA: public
+      DB_PASSWORD: 123456
+    command: start-dev
+    depends_on:
+      - keycloak-db
+
+  keycloak-db:
+    image: postgres:16.0
+    restart: always
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      TZ: America/Sao_Paulo
+    ports:
+      - 5434:5432
+    expose:
+      - 5432
+    networks:
+      - listalk-networks
+    volumes:
+      - keycloak-pg-data:/var/lib/postgresql/listalk/data
+
+volumes:
+  pg-data:
+    driver: local
+  keycloak-pg-data:
+    driver: local
+
+networks:
+  listalk-networks:
+    driver: bridge

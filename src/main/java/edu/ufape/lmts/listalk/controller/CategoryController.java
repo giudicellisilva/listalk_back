@@ -12,19 +12,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import jakarta.validation.Valid;
 import edu.ufape.lmts.listalk.model.Category;
-import edu.ufape.lmts.listalk.controller.dto.*;
 import edu.ufape.lmts.listalk.controller.dto.request.CategoryRequest;
 import edu.ufape.lmts.listalk.controller.dto.response.CategoryResponse;
 import edu.ufape.lmts.listalk.facade.Facade;
 
 
-@CrossOrigin (origins = "http://localhost:8081/" )
+@CrossOrigin (origins = "http://localhost:3000/" )
 @RestController
 @RequestMapping("/")
 public class CategoryController {
 	@Autowired
 	private Facade facade;
-	
+
 	@GetMapping("category")
 	public List<CategoryResponse> getAllCategory() {
 		//Apenas para referência e debug
@@ -37,19 +36,18 @@ public class CategoryController {
 			System.out.println("Name: " + authentication.getName());
 			System.out.println("Subject (id do usuário): " + principal.getSubject());
 		//---------------
-		
+
 		return facade.getAllCategory()
 			.stream()
 			.map(CategoryResponse::new)
 			.toList();
 	}
-	
+
 	@PostMapping("category")
-	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")	
 	public CategoryResponse createCategory(@Valid @RequestBody CategoryRequest newObj) {
 		return new CategoryResponse(facade.saveCategory(newObj.convertToEntity()));
 	}
-	
+
 	@GetMapping("category/{id}")
 	public CategoryResponse getCategoryById(@PathVariable Long id) {
 		try {
@@ -58,9 +56,8 @@ public class CategoryController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category " + id + " not found.");
 		}
 	}
-	
+
 	@PostMapping("category/{id}")
-	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")	
 	public CategoryResponse updateCategory(@PathVariable Long id, @Valid @RequestBody CategoryRequest obj) {
 		try {
 			Category o = obj.convertToEntity();
@@ -69,11 +66,10 @@ public class CategoryController {
 		} catch (RuntimeException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category " + id + " not found.");
 		}
-		
+
 	}
-	
+
 	@DeleteMapping("category/{id}")
-	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")	
 	public String deleteCategory(@PathVariable Long id) {
 		try {
 			facade.deleteCategory(id);
@@ -81,13 +77,13 @@ public class CategoryController {
 		} catch (RuntimeException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category " + id + " not found.");
 		}
-		
-	}
-	
 
-	
-	
-	
-	
+	}
+
+
+
+
+
+
 
 }

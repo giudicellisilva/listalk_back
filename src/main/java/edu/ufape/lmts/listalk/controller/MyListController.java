@@ -15,13 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.validation.Valid;
 
 import edu.ufape.lmts.listalk.model.MyList;
-import edu.ufape.lmts.listalk.controller.dto.*;
 import edu.ufape.lmts.listalk.controller.dto.request.MyListRequest;
 import edu.ufape.lmts.listalk.controller.dto.response.MyListResponse;
 import edu.ufape.lmts.listalk.facade.Facade;
 
 
-@CrossOrigin (origins = "http://localhost:8081/" )
+@CrossOrigin (origins = "http://localhost:3000/" )
 @RestController
 @RequestMapping("/")
 public class MyListController {
