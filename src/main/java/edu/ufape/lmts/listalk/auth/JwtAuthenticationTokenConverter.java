@@ -1,4 +1,4 @@
-package edu.ufape.lmts.listalk.security;
+package edu.ufape.lmts.listalk.auth;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.converter.Converter;

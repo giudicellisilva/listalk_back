@@ -19,7 +19,7 @@ import edu.ufape.lmts.listalk.controller.dto.response.ItemResponse;
 import edu.ufape.lmts.listalk.facade.Facade;
 
 
-@CrossOrigin (origins = "http://localhost:3000/" )
+@CrossOrigin (origins = "http://localhost:3000/", allowedHeaders = "*" )
 @RestController
 @RequestMapping("/myList/")
 public class ItemController {
