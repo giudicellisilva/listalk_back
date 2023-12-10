@@ -28,7 +28,6 @@ public class WebSecurityConfig {
                         jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationTokenConverter)))
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(customizer -> customizer.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
-
                 .build();
     }
 }
